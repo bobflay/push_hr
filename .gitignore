@@ -1,0 +1,21 @@
+# Unencrypted data files
+data/attendance_data.json
+data/*.xlsx
+data/*.pdf
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# MacOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attendance Analysis</title>
+    <link rel="stylesheet" href="attendance_dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Employee Attendance Analysis Dashboard</h1>
+            <p class="subtitle">Comprehensive view of employee check-ins, absences, and leave requests</p>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by name or department...">
+            </div>
+            <div class="filter-group">
+                <div class="filter-box">
+                    <label for="departmentFilter" class="filter-label">Department</label>
+                    <select id="departmentFilter">
+                        <option value="">All Departments</option>
+                    </select>
+                </div>
+                <div class="filter-box">
+                    <label for="statusFilter" class="filter-label">Status</label>
+                    <select id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="aligned">Aligned</option>
+                        <option value="warning">Warning</option>
+                        <option value="issues">Issues</option>
+                    </select>
+                </div>
+                <div class="filter-box">
+                    <label for="sortBy" class="filter-label">Sort By</label>
+                    <select id="sortBy">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="checked-in-desc">Most Check-ins</option>
+                        <option value="checked-in-asc">Least Check-ins</option>
+                        <option value="absences-desc">Most Absences</option>
+                        <option value="absences-asc">Least Absences</option>
+                        <option value="issues-desc">Most Issues</option>
+                    </select>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button id="resetFiltersBtn" class="btn-secondary">Reset Filters</button>
+                <button id="exportBtn" class="btn-primary">Export to CSV</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalEmployees">0</div>
+                <div class="stat-label">Total Employees</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgCheckIns">0</div>
+                <div class="stat-label">Avg Check-ins</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value" id="employeesWithIssues">0</div>
+                <div class="stat-label">Employees with Issues</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalLeaveRequests">0</div>
+                <div class="stat-label">Total Leave Days</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="attendanceTable">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Days Checked In</th>
+                        <th>Justified Absences</th>
+                        <th>Unjustified Absences</th>
+                        <th>Partial Check-ins</th>
+                        <th>Alignment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal for detailed view -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalEmployeeName"></h2>
+                <div id="modalEmployeeDetails">
+                    <div class="detail-section">
+                        <h3>Overview</h3>
+                        <div id="modalOverview"></div>
+                    </div>
+                    <div class="detail-section">
+                        <h3>Leave Breakdown</h3>
+                        <div id="modalLeaveBreakdown"></div>
+                    </div>
+                    <div class="detail-section">
+                        <h3>Daily Attendance</h3>
+                        <div id="modalDailyAttendance" class="daily-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="attendance_dashboard.js"></script>
+</body>
+</html>
