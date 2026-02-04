@@ -31,26 +31,60 @@ function decryptData(encryptedData, password) {
     }
 }
 
-// Load data when page loads
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        // Fetch encrypted data
-        const response = await fetch('data/attendance_data_encrypted.txt');
-        const encryptedData = await response.text();
+// Handle password submission
+document.addEventListener('DOMContentLoaded', () => {
+    const passwordForm = document.getElementById('passwordForm');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordError = document.getElementById('passwordError');
+    const passwordOverlay = document.getElementById('passwordOverlay');
+    const mainContainer = document.getElementById('mainContainer');
 
-        // Decrypt with password
-        const password = 'hr@push2026';
-        const decryptedJson = decryptData(encryptedData, password);
+    passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const enteredPassword = passwordInput.value;
+        passwordError.textContent = '';
 
-        // Parse JSON
-        employeesData = JSON.parse(decryptedJson);
-        filteredData = [...employeesData];
+        try {
+            // Show loading state
+            passwordError.textContent = 'Decrypting data...';
+            passwordError.style.color = '#667eea';
 
-        initializeDashboard();
-    } catch (error) {
-        console.error('Error loading data:', error);
-        alert('Failed to load attendance data. Please make sure the data file exists.');
-    }
+            // Fetch encrypted data
+            const response = await fetch('data/attendance_data_encrypted.txt');
+            if (!response.ok) {
+                throw new Error('Failed to load data file');
+            }
+            const encryptedData = await response.text();
+
+            // Attempt to decrypt with entered password
+            const decryptedJson = decryptData(encryptedData, enteredPassword);
+
+            // Parse JSON (this will throw if decryption failed)
+            employeesData = JSON.parse(decryptedJson);
+            filteredData = [...employeesData];
+
+            // Success! Hide password overlay and show dashboard
+            passwordOverlay.style.display = 'none';
+            mainContainer.style.display = 'block';
+            initializeDashboard();
+
+        } catch (error) {
+            console.error('Decryption error:', error);
+            passwordError.style.color = '#ef4444';
+            if (error.message.includes('decrypt')) {
+                passwordError.textContent = '❌ Incorrect password. Please try again.';
+            } else if (error.message.includes('JSON')) {
+                passwordError.textContent = '❌ Incorrect password. Decryption failed.';
+            } else {
+                passwordError.textContent = '❌ Failed to load data file. Please check the server.';
+            }
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    });
+
+    // Focus password input on page load
+    passwordInput.focus();
 });
 
 // Initialize dashboard

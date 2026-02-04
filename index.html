@@ -8,7 +8,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <!-- Password Prompt Overlay -->
+    <div id="passwordOverlay" class="password-overlay">
+        <div class="password-box">
+            <h2>🔒 Secure Access</h2>
+            <p>Please enter the password to view the attendance dashboard</p>
+            <form id="passwordForm">
+                <input
+                    type="password"
+                    id="passwordInput"
+                    placeholder="Enter password"
+                    autocomplete="off"
+                    required
+                />
+                <button type="submit" class="btn-primary">Unlock Dashboard</button>
+            </form>
+            <div id="passwordError" class="password-error"></div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer" style="display: none;">
         <header>
             <h1>Employee Attendance Analysis Dashboard</h1>
             <p class="subtitle">Comprehensive view of employee check-ins, absences, and leave requests</p>
