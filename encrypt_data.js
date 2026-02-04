@@ -43,9 +43,9 @@ try {
         throw new Error('Invalid JSON format');
     }
 
-    // Create encryption key from password
+    // Create encryption key from password using PBKDF2 (matches CryptoJS)
     console.log('\n🔐 Encrypting data...');
-    const key = crypto.scryptSync(PASSWORD, 'salt', 32);
+    const key = crypto.pbkdf2Sync(PASSWORD, 'salt', 1000, 32, 'sha1');
     const iv = crypto.randomBytes(16);
 
     // Create cipher

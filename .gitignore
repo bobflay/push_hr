@@ -1,5 +1,6 @@
 # Unencrypted data files
 data/attendance_data.json
+data/attendance_data_decrypted.json
 data/*.xlsx
 data/*.pdf
 
